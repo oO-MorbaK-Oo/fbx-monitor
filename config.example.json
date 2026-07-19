@@ -1,0 +1,33 @@
+{
+  "freebox_url": "http://mafreebox.freebox.fr",
+
+  "app_id": "fbx-monitor",
+  "app_name": "Moniteur Freebox",
+  "app_version": "1.0.0",
+  "device_name": "VOTRE_MACHINE",
+
+  "app_token": "",
+
+  "sms": {
+    "user": "VOTRE_IDENTIFIANT_FREE_MOBILE",
+    "pass": "VOTRE_CLE_API_SMS",
+    "delai_entre_sms_s": 3,
+    "max_sms_par_cycle": 5
+  },
+
+  "intervalle_s": 60,
+
+  "notifier": {
+    "changement_ip": true,
+    "changement_media": true,
+    "etat_connexion": true,
+    "vpn_connexion": true,
+    "vpn_deconnexion": true,
+    "demarrage_script": true,
+    "reprise_apres_coupure": true
+  },
+
+  "heartbeat_jours": 7,
+
+  "state_file": "/data/state.json"
+}

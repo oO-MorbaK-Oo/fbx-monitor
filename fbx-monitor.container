@@ -1,0 +1,31 @@
+# Quadlet Podman : démarrage automatique du conteneur via systemd.
+#
+# Rootful : copier dans /etc/containers/systemd/fbx-monitor.container
+# Rootless: copier dans ~/.config/containers/systemd/fbx-monitor.container
+#           (et `loginctl enable-linger $USER` pour survivre à la déconnexion)
+# Puis : systemctl [--user] daemon-reload && systemctl [--user] start fbx-monitor
+
+[Unit]
+Description=Moniteur Freebox (conteneur Podman)
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+Image=localhost/fbx-monitor:latest
+ContainerName=fbx-monitor
+# Adaptez le chemin de la config ; :Z si SELinux (Fedora/RHEL)
+Volume=/etc/fbx-monitor/config.json:/config/config.json:ro
+Volume=fbx-state:/data
+ReadOnly=true
+DropCapability=ALL
+NoNewPrivileges=true
+# Rootless uniquement : décommentez pour que l'utilisateur du conteneur
+# soit mappé sur votre utilisateur hôte (droits de lecture sur config.json)
+# UserNS=keep-id
+
+[Service]
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target default.target

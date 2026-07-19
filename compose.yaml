@@ -1,0 +1,24 @@
+# Compatible `docker compose up -d` et `podman compose up -d`
+services:
+  fbx-monitor:
+    build: .
+    image: fbx-monitor
+    container_name: fbx-monitor
+    restart: unless-stopped
+
+    # --- Durcissement (équivalent conteneur de l'unité systemd) ---
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+    volumes:
+      # Secrets : lecture seule en fonctionnement normal.
+      # (Sur Fedora/RHEL avec SELinux + podman, suffixez :ro,Z)
+      - ./config.json:/config/config.json:ro
+      # État persistant (state.json)
+      - fbx-state:/data
+
+volumes:
+  fbx-state:
